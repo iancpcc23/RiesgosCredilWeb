@@ -1,0 +1,53 @@
+<div class="flex justify-center items-center flex-col h-full gap-5 ">
+  <!-- Fecha -->
+    <form class="flex flex-col gap-4" >
+      <div>
+        <input
+          #date
+          [formControl]="controlDate"
+          class="rounded-md shadow shadow-slate-400 border-spacing-1 p-2"
+          type="date"
+        />
+        <p
+          *ngIf="controlDate.hasError"
+          class="text-red-500 text-xs mt-1 italic"
+        >
+          {{ controlDate.getError("fecha") }}
+        </p>
+      </div>
+      <button
+      [disabled]="appState !=null && appState.state == DataState.LOADING"
+        class="cursor-pointer flex justify-center btn bg-[#095595] text-white p-2 rounded-md hover:bg-blue-500 disabled:bg-[#095595] disabled:cursor-not-allowed disabled:opacity-50"
+        type="button"
+        (click)="onSubmit()"
+        value="Ejecutar"
+      ><app-spinner *ngIf="appState!=null && appState.state == DataState.LOADING"></app-spinner> Ejecutar</button>
+    </form>
+  <!-- Porcentaje de carga de informacion -->
+  <app-progress-bar class="w-2/4 md:w-1/2 "></app-progress-bar>
+  <!-- <div class="w-[500px] border-red-500 flex items-center">
+    <div class="w-full bg-gray-200 rounded-full h-7 mb-4 dark:bg-gray-700">
+      <div
+        class="bg-green-600 h-7 rounded-full dark:bg-green-500 p-1 text-xs md:text-sm"
+        [style]="timeValues == 0 ? 'padding:0' : ''"
+        [ngStyle]="{ width: timeValues + '%' }"
+      >
+        {{ timeValues }}%
+      </div>
+    </div>
+  </div> -->
+
+
+
+    <ng-container *ngIf=" appState" [ngSwitch]="appState.state">
+      <app-success
+      *ngSwitchCase="DataState.LOADED"
+      [title]="appState.data?.message"
+      ></app-success>
+      <app-danger
+      *ngSwitchCase="DataState.ERROR"
+      [title]="appState.data?.message"
+      ></app-danger>
+    </ng-container>
+
+</div>

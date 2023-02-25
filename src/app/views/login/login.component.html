@@ -1,0 +1,44 @@
+<div class="flex flex-col space-y-5 justify-center items-center  h-full">
+
+  <!-- Card Login -->
+
+   <div class="shadow shadow-gray-500 w-[300px]  h-min-[400px] rounded-md px-10 py-5">
+    <!-- logo -->
+    <div class="flex justify-center p-1">
+      <img class="w-12 h-12 md:w-14 md:h-14" src="../../../assets/img/logo.png" alt="">
+    </div>
+    <h1 class=" w-full p-1 text-center text-base  font-semibold">Iniciar Sesión</h1>
+    <form  [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5 mt-3"   >
+      <div class="item__form">
+        <!-- <label class="lbl__form"  for="">Username</label> -->
+        <input class="input__form text-base "
+        type="text"
+        formControlName="usuario"
+        placeholder="Usuario"
+        required>
+        <p *ngIf="loginForm.controls.usuario.errors" class="text-red-500 text-xs italic"></p>
+      </div>
+      <div class="item__form">
+        <!-- <label class="lbl__form" for="">Contraseña</label> -->
+        <input class="input__form text-base"
+        type="password"
+        formControlName="password"
+        placeholder="Contraseña"
+        required>
+        <!-- <p class="mt-2 text-red-500 text-xs italic">Ingrese una contraseña valida</p> -->
+      </div>
+      <button
+      [disabled]="(login$ | async )?.state ===DataState.LOADING "
+      class="bg-[#095595] flex justify-center disabled:bg-[#095595] disabled:cursor-not-allowed disabled:opacity-50 items-center text-xs md:text-sm p-1 w-full  h-10 rounded-md text-white btn btn-blue cursor-pointer hover:bg-blue-500"
+      type="submit" >
+
+    Iniciar Sesión</button>
+    </form>
+    <p class="text-xs md:text-sm mt-5 text-center "> No tienes una cuenta? <span class="cursor-pointer text-xs md:text-sm font-semibold">Registrarse</span></p>
+   </div>
+
+   <ng-container *ngIf="(login$ | async ) as loginState" [ngSwitch]="loginState.state" >
+     <app-danger *ngSwitchCase="DataState.ERROR"   [title]="loginState.data?.message "  ></app-danger>
+    </ng-container>
+   <!-- <p>{{loginForm.status}}</p> -->
+</div>
